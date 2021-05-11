@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<style>
+			body {
+				background-color: wheat;
+			}
+			.main {
+				display: flex;
+				justify-content: space-evenly;
+			}
+			.main__apiSection {
+				width: 400px;
+				padding: 15px;
+				border-radius: 15px;
+				background-color: white;
+			}
+			.main__resultSection {
+				width: 500px;
+				padding: 15px;
+				background-color: white;
+				border-radius: 15px;
+
+				display: flex;
+				align-items: center;
+			}
+			div {
+				box-sizing: border-box;
+			}
+			.apiTest {
+				margin-bottom: 5px;
+			}
+			.apiTest__inputBox {
+				display: flex;
+				margin-top: 5px;
+				justify-content: center;
+				width: 250px;
+			}
+			.apiTest__inputBox label {
+				display: block;
+				width: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main">
+			<div class="main__apiSection">
+				<div class="apiTest">
+					<div>로그인</div>
+					<form class="login" action="">
+						<div class="apiTest__inputBox">
+							<label for="login__id">id </label>
+							<input class="login__id" id="login__id" type="text" />
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="password">password </label>
+							<input class="login__password" id="password" type="password" />
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="로그인" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>중복 확인</div>
+					<form class="checkId" action="">
+						<div class="apiTest__inputBox">
+							<label for="checkId__id">id</label>
+							<input type="text" id="checkId__id" class="checkId__id" />
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="중복확인" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>회원 가입</div>
+					<form action="" class="join">
+						<div class="apiTest__inputBox">
+							<label for="join__id">id</label>
+							<input type="text" id="join__id" class="join__id" />
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="join__password">password</label>
+							<input
+								type="password"
+								id="join__password"
+								class="join__password"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="join__name">name</label>
+							<input type="text" id="join__name" class="join__name" />
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="회원 가입" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>로그 아웃</div>
+					<form action="" class="logout">
+						<div class="apiTest__inputBox">
+							<label for="logout__id">id</label>
+							<input type="text" id="logout__id" class="logout__id" />
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="로그아웃" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>사용자 조회</div>
+					<form action="" class="getUser">
+						<div class="apiTest__inputBox">
+							<label for="getUser__id">id</label>
+							<input type="text" id="getUser__id" class="getUser__id" />
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="사용자 조회" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>일주일 계획 조회</div>
+					<form class="getWeekPlan" action="">
+						<div class="apiTest__inputBox">
+							<label for="getWeekPlan__currentDay">currentDay</label>
+							<input
+								type="date"
+								id="getWeekPlan__currentDay"
+								class="getWeekPlan__currentDay"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="getWeekPlan__id">id</label>
+							<input type="text" id="getWeekPlan__id" class="getWeekPlan__id" />
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="일주일 계획 조회" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>계획 등록</div>
+					<form class="registerPlan" action="">
+						<div class="apiTest__inputBox">
+							<label for="registerPlan__date">date</label>
+							<input
+								type="date"
+								id="registerPlan__date"
+								class="registerPlan__date"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="registerPlan__id">id</label>
+							<input
+								type="text"
+								id="registerPlan__id"
+								class="registerPlan__id"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="registerPlan__plan">plan</label>
+							<input
+								type="text"
+								id="registerPlan__plan"
+								class="registerPlan__plan"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="registerPlan__finish">finish</label>
+							<input
+								type="text"
+								id="registerPlan__finish"
+								class="registerPlan__finish"
+								value="false"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="계획 등록" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>계획 수정</div>
+					<form class="changePlan" action="">
+						<div class="apiTest__inputBox">
+							<label for="changePlan__date">date</label>
+							<input
+								type="date"
+								id="changePlan__date"
+								class="changePlan__date"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="changePlan__id">id</label>
+							<input type="text" id="changePlan__id" class="changePlan__id" />
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="changePlan__plan">plan</label>
+							<input
+								type="text"
+								id="changePlan__plan"
+								class="changePlan__plan"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="changePlan__finish">finish</label>
+							<input
+								type="text"
+								id="changePlan__finish"
+								class="changePlan__finish"
+								value="false"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="changePlan__key">key</label>
+							<input type="text" id="changePlan__key" class="changePlan__key" />
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="계획 수정" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>계획 삭제</div>
+					<form class="removePlan" action="">
+						<div class="apiTest__inputBox">
+							<label for="removePlan__key">key</label>
+							<input type="text" id="removePlan__key" class="removePlan__key" />
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="removePlan__id">id</label>
+							<input type="text" id="removePlan__id" class="removePlan__id" />
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="계획 삭제" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>일괄 계획 등록</div>
+					<form class="registerEveryDay" action="">
+						<div class="apiTest__inputBox">
+							<label for="registerEveryDay__date">date</label>
+							<input
+								type="date"
+								id="registerEveryDay__date"
+								class="registerEveryDay__date"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="registerEveryDay__id">id</label>
+							<input
+								type="text"
+								id="registerEveryDay__id"
+								class="registerEveryDay__id"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="registerEveryDay__plan">plan</label>
+							<input
+								type="text"
+								id="registerEveryDay__plan"
+								class="registerEveryDay__plan"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="registerEveryDay__finish">finish</label>
+							<input
+								type="text"
+								id="registerEveryDay__finish"
+								class="registerEveryDay__finish"
+								value="false"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="일괄 계획 등록" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>평일 계획 등록</div>
+					<form class="registerWeekday" action="">
+						<div class="apiTest__inputBox">
+							<label for="registerWeekday__date">date</label>
+							<input
+								type="date"
+								id="registerWeekday__date"
+								class="registerWeekday__date"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="registerWeekday__id">id</label>
+							<input
+								type="text"
+								id="registerWeekday__id"
+								class="registerWeekday__id"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="registerWeekday__plan">plan</label>
+							<input
+								type="text"
+								id="registerWeekday__plan"
+								class="registerWeekday__plan"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="registerWeekday__finish">finish</label>
+							<input
+								type="text"
+								id="registerWeekday__finish"
+								class="registerWeekday__finish"
+								value="false"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="평일 계획 등록" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>일괄 계획 수정</div>
+					<form class="changeEveryday" action="">
+						<div class="apiTest__inputBox">
+							<label for="changeEveryday__date">date</label>
+							<input
+								type="date"
+								id="changeEveryday__date"
+								class="changeEveryday__date"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="changeEveryday__id">id</label>
+							<input
+								type="text"
+								id="changeEveryday__id"
+								class="changeEveryday__id"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="changeEveryday__plan">plan</label>
+							<input
+								type="text"
+								id="changeEveryday__plan"
+								class="changeEveryday__plan"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="changeEveryday__targetPlan">targetPlan</label>
+							<input
+								type="text"
+								id="changeEveryday__targetPlan"
+								class="changeEveryday__targetPlan"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="changeEveryday__finish">finish</label>
+							<input
+								type="text"
+								id="changeEveryday__finish"
+								class="changeEveryday__finish"
+								value="false"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="일괄 계획 수정" />
+						</div>
+					</form>
+				</div>
+				<div class="apiTest">
+					<div>일괄 계획 삭제</div>
+					<form class="removeEveryDay" action="">
+						<div class="apiTest__inputBox">
+							<label for="removeEveryDay__id">id</label>
+							<input
+								type="text"
+								id="removeEveryDay__id"
+								class="removeEveryDay__id"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<label for="removeEveryDay__plan">plan</label>
+							<input
+								type="text"
+								id="removeEveryDay__plan"
+								class="removeEveryDay__plan"
+							/>
+						</div>
+						<div class="apiTest__inputBox">
+							<input type="submit" value="일괄 계획 삭제" />
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="main__resultSection"></div>
+		</div>
+
+		<script>
+			let resultSection = document.querySelector('.main__resultSection');
+			let loginForm = document.querySelector('.login');
+
+			const apiTest = (
+				targetDOMClass,
+				inputClasses,
+				requestKeys,
+				url,
+				method,
+				ObjectType = ''
+			) => {
+				const targetDOM = document.querySelector(targetDOMClass);
+				targetDOM.addEventListener('submit', (e) => {
+					e.preventDefault();
+					const inputResults = [];
+					inputClasses.forEach((inputClass) => {
+						const inputDom = document.querySelector(inputClass);
+						console.log(inputDom.value);
+						inputResults.push(inputDom.value);
+					});
+					if (method === 'get' || method === 'delete') {
+						let requestUrl = url;
+						inputResults.forEach((inputResult) => {
+							requestUrl += `/${inputResult}`;
+						});
+						console.log(requestUrl);
+						let requestPromise = '';
+						if (method === 'get') {
+							requestPromise = axios.get(requestUrl);
+						} else {
+							requestPromise = axios.delete(requestUrl);
+						}
+						requestPromise
+							.then((response) => {
+								console.log('then으로 처리됨');
+								resultSection.innerHTML = response;
+							})
+							.catch((error) => {
+								console.log('catch로 처리됨');
+								resultSection.innerHTML = error;
+							});
+					} else if (method === 'post' || method === 'put') {
+						const requestData = {};
+						if (ObjectType === 'plan') {
+							requestData.id = null;
+							requestData.plan = null;
+							requestData.finish = null;
+							requestData.date = null;
+							requestData.targetPlan = null;
+							requestData.key = null;
+						} else if (ObjectType === 'user') {
+							requestData.id = null;
+							requestData.password = null;
+							requestData.name = null;
+						}
+
+						requestKeys.forEach((value, index) => {
+							requestData[value] = inputResults[index];
+						});
+						console.log(requestData);
+						let requestPromise = null;
+						if (method === 'post') {
+							requestPromise = axios.post(url, requestData);
+						} else {
+							requestPromise = axios.put(url, requestData);
+						}
+						requestPromise
+							.then((response) => {
+								console.log('then으로 처리됨');
+								resultSection.innerHTML = response;
+							})
+							.catch((error) => {
+								console.log('catch로 처리됨');
+								resultSection.innerHTML = error;
+							});
+					}
+				});
+			};
+			apiTest(
+				'.login',
+				['.login__id', '.login__password'],
+				['id', 'password'],
+				'/login',
+				'post',
+				'user'
+			);
+			apiTest('.checkId', ['.checkId__id'], ['id'], '/join/checkId', 'get');
+			apiTest(
+				'.join',
+				['.join__id', '.join__password', '.join__name'],
+				['id', 'password', 'name'],
+				'/join',
+				'post',
+				'user'
+			);
+			apiTest('.logout', ['.logout__id'], ['id'], '/logout', 'post', 'user');
+			apiTest('.getUser', ['.getUser__id'], ['id'], '/api/user', 'get');
+			apiTest(
+				'.getWeekPlan',
+				['.getWeekPlan__currentDay', '.getWeekPlan__id'],
+				[],
+				'/api/plan',
+				'get'
+			);
+			apiTest(
+				'.registerPlan',
+				[
+					'.registerPlan__date',
+					'.registerPlan__id',
+					'.registerPlan__plan',
+					'.registerPlan__finish',
+				],
+				['date', 'id', 'plan', 'finish'],
+				'/api/plan',
+				'post',
+				'plan'
+			);
+			apiTest(
+				'.changePlan',
+				[
+					'.changePlan__date',
+					'.changePlan__id',
+					'.changePlan__key',
+					'.changePlan__plan',
+					'.changePlan__finish',
+				],
+				['date', 'id', 'key', 'plan', 'finish'],
+				'/api/plan',
+				'put',
+				'plan'
+			);
+			apiTest(
+				'.removePlan',
+				['.removePlan__key', '.removePlan__id'],
+				['key', 'id'],
+				'/api/plan',
+				'delete'
+			);
+			apiTest(
+				'.registerEveryDay',
+				[
+					'.registerEveryDay__date',
+					'.registerEveryDay__id',
+					'.registerEveryDay__plan',
+					'.registerEveryDay__finish',
+				],
+				['date', 'id', 'plan', 'finish'],
+				'/api/plan/everyday',
+				'post',
+				'plan'
+			);
+			apiTest(
+				'.registerWeekday',
+				[
+					'.registerWeekday__date',
+					'.registerWeekday__id',
+					'.registerWeekday__plan',
+					'.registerWeekday__finish',
+				],
+				['date', 'id', 'plan', 'finish'],
+				'/api/plan/weekday',
+				'post',
+				'plan'
+			);
+			apiTest(
+				'.changeEveryday',
+				[
+					'.changeEveryday__date',
+					'.changeEveryday__id',
+					'.changeEveryday__plan',
+					'.changeEveryday__finish',
+					'.changeEveryday__targetPlan',
+				],
+				['date', 'id', 'plan', 'finish', 'targetPlan'],
+				'/api/plan/all',
+				'put',
+				'plan'
+			);
+			apiTest(
+				'.removeEveryDay',
+				['.removeEveryDay__plan', '.removeEveryDay__id'],
+				[],
+				'/api/plan/all',
+				'delete'
+			);
+		</script>
+	</body>
+</html>
