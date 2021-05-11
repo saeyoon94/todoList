@@ -1,27 +1,25 @@
 package practice.todoList.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import practice.todoList.Vo.LoginVo;
+import practice.todoList.controller.handler.FindMemberInfoHandler;
+import practice.todoList.controller.handler.SessionHandler;
 import practice.todoList.domain.Member;
-import practice.todoList.domain.Plan;
-import practice.todoList.domain.WeekDay;
 import practice.todoList.service.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/")
 public class TodoListController {
 
@@ -31,6 +29,20 @@ public class TodoListController {
     private final MemberInquiryService memberInquiryService;
     private final PlanService planService;
     private final HttpSession httpSession;
+
+    private static Map<String, SessionHandler> sessionHandlerMap = new HashMap<>();
+
+    @Autowired
+    public TodoListController(LoginService loginService, DuplicateValidationService duplicateValidationService, JoinService joinService, MemberInquiryService memberInquiryService, PlanService planService, HttpSession httpSession) {
+        this.loginService = loginService;
+        this.duplicateValidationService = duplicateValidationService;
+        this.joinService = joinService;
+        this.memberInquiryService = memberInquiryService;
+        this.planService = planService;
+        this.httpSession = httpSession;
+
+        sessionHandlerMap.put("/api/user_GET", new FindMemberInfoHandler(memberInquiryService));
+    }
 
 
     @PostMapping("/login")
@@ -75,7 +87,35 @@ public class TodoListController {
         }
     }
 
+    @RequestMapping("/api/*")
+    public ResponseEntity sessionDispatcher(HttpServletRequest request) throws URISyntaxException {
+        String userId = (String) httpSession.getAttribute("userId");
+        if (userId == null) {
+            HttpHeaders httpHeaders = new HttpHeaders();
+            URI uri = new URI("/");   //종착치 url을 정해야한다.
+            httpHeaders.setLocation(uri);
+            return new ResponseEntity(httpHeaders, HttpStatus.FOUND);
+        }
 
+        String requestURI = request.getRequestURI();
+        String httpMethod = request.getMethod();
+
+        //URL과 http메소드를 동시에 고려하기 위함
+        SessionHandler sessionHandler = sessionHandlerMap.get(requestURI + "_" + httpMethod);
+        if (sessionHandler == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        ResponseEntity responseEntity = sessionHandler.process(userId);
+        return responseEntity;
+
+
+    }
+
+
+
+
+/**
 
     @GetMapping("/api/user")
     public ResponseEntity<Member> findMemberInfo() throws URISyntaxException {
@@ -216,6 +256,6 @@ public class TodoListController {
     }
 
 
-
+*/
 
 }
