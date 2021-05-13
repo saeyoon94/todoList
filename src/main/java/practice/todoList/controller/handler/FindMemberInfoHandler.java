@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import practice.todoList.domain.Member;
 import practice.todoList.service.MemberInquiryService;
 
-public class FindMemberInfoHandler implements SessionHandler {
+public class FindMemberInfoHandler extends SessionHandler {
 
     private final MemberInquiryService memberInquiryService;
 
@@ -19,4 +19,5 @@ public class FindMemberInfoHandler implements SessionHandler {
         Member member = memberInquiryService.findMemberInfo(userId);
         return new ResponseEntity<Member>(member, HttpStatus.OK);
     }
+
 }
