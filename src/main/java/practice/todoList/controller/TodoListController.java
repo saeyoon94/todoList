@@ -81,6 +81,7 @@ public class TodoListController {
     public ResponseEntity<Member> findMemberInfo() throws URISyntaxException {
 
         String userId = (String) httpSession.getAttribute("userId");
+        /**
         //null 처리를 공통화하고싶다.. /api 이하만 다른 컨트롤러로 빼서 어떻게 공통으로 하도록 해보자.
         if (userId == null) {
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -88,6 +89,7 @@ public class TodoListController {
             httpHeaders.setLocation(uri);
             return new ResponseEntity(httpHeaders, HttpStatus.FOUND);
         }
+         */
 
         Member member = memberInquiryService.findMemberInfo(userId);
         return new ResponseEntity<Member>(member, HttpStatus.OK);
@@ -98,7 +100,9 @@ public class TodoListController {
             (@PathVariable("currentDay") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate currentDate) throws URISyntaxException {
         //RequestBody로 받으면 알아서 직렬화되어 localDate객체로 받을 수 있으나, 그게 아니면 @DateTimeFormat 사용
 
+
         String userId = (String) httpSession.getAttribute("userId");
+        /**
         //null 처리를 공통화하고싶다.. /api 이하만 다른 컨트롤러로 빼서 어떻게 공통으로 하도록 해보자.
         if (userId == null) {
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -106,6 +110,7 @@ public class TodoListController {
             httpHeaders.setLocation(uri);
             return new ResponseEntity(httpHeaders, HttpStatus.FOUND);
         }
+         */
 
         Map<LocalDate, List<Map<String, List<?>>>> plansAndMemosOfWeek = planService.findPlanAndMemoOfWeek(userId, currentDate);
         return new ResponseEntity<>(plansAndMemosOfWeek, HttpStatus.OK);
