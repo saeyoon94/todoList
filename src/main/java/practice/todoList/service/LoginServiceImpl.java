@@ -3,6 +3,7 @@ package practice.todoList.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import practice.todoList.Exception.LoginFailureException;
 import practice.todoList.Vo.LoginVo;
 import practice.todoList.domain.Member;
 import practice.todoList.repository.MemberRepository;
@@ -24,11 +25,11 @@ public class LoginServiceImpl implements LoginService{
         Optional<Member> foundId = memberRepository.findById(id);
 
         if(foundId.isEmpty()) {
-            throw new IllegalStateException("Invalid Id");
+            throw new LoginFailureException("Invalid Id");
         }
         else {
             if(!foundId.map(Member::getPassword).get().equals(pw)) {
-                throw new IllegalStateException("Invalid Password");
+                throw new LoginFailureException("Invalid Password");
             }
         }
 

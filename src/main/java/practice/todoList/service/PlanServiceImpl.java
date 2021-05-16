@@ -3,6 +3,7 @@ package practice.todoList.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import practice.todoList.Exception.UnAuthorizedRequestException;
 import practice.todoList.domain.Plan;
 import practice.todoList.domain.WeekDay;
 import practice.todoList.repository.NoteRepository;
@@ -40,7 +41,8 @@ public class PlanServiceImpl implements PlanService{
     }
 
     @Override
-    public void registerPlan(Plan plan) {
+    public void registerPlan(String requestUserId, Plan plan) {
+        plan.setUserId(requestUserId);
         planRepository.save(plan);
     }
 
@@ -52,7 +54,7 @@ public class PlanServiceImpl implements PlanService{
 
         Plan asisPlan = planRepository.findById(id).get();
         if (asisPlan.getUserId() != requestUserId) {
-            throw new IllegalStateException("Unauthorized Request");
+            throw new UnAuthorizedRequestException("Unauthorized Request");
         }
         asisPlan.setPlan(newPlan);
         asisPlan.setFinish(newFinish);
@@ -62,13 +64,15 @@ public class PlanServiceImpl implements PlanService{
     @Override
     public void deletePlan(String requestUserId, int id) {
         if (planRepository.findById(id).get().getUserId() != requestUserId) {
-            throw new IllegalStateException("Unauthorized Request");
+            throw new UnAuthorizedRequestException("Unauthorized Request");
         }
         planRepository.deleteById(id);
     }
 
     @Override
-    public List<Plan> registerPlans(Plan plan, WeekDay weekDay) throws CloneNotSupportedException {
+    public List<Plan> registerPlans(String requestUserId, Plan plan, WeekDay weekDay) throws CloneNotSupportedException {
+
+        plan.setUserId(requestUserId);
         LocalDate startDate = plan.getDate(); //월요일
         planRepository.save(plan);
 

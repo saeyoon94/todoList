@@ -15,12 +15,12 @@ public interface PlanService {
     public Map<LocalDate, List<Map<String, List<?>>>> findPlanAndMemoOfWeek(String userId, LocalDate currentDate);
 
     //public void registerPlan(Map<String, ?> newPlan);
-    public void registerPlan(Plan plan);
+    public void registerPlan(String requestUserId, Plan plan);
 
     public Plan modifyPlan(String requestUserId, Plan plan);
 
     public void deletePlan(String requestUserId, int id);
 
-    public List<Plan> registerPlans(Plan plan, WeekDay weekDay) throws CloneNotSupportedException;
+    public List<Plan> registerPlans(String requestUserId, Plan plan, WeekDay weekDay) throws CloneNotSupportedException;
 
 }

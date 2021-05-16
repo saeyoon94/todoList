@@ -3,10 +3,8 @@ package practice.todoList.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import practice.todoList.domain.Member;
+import practice.todoList.Exception.AlreadyExistsUserIdException;
 import practice.todoList.repository.MemberRepository;
-
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -16,8 +14,6 @@ public class DuplicateValidationServiceImpl implements DuplicateValidationServic
 
     @Override
     public void validate(String id) {
-        if(memberRepository.findById(id).isPresent()) {
-            throw new IllegalStateException("ID already exists.");
-        }
+        memberRepository.findById(id).ifPresent(s -> {throw new AlreadyExistsUserIdException("ID already exists.");});
     }
 }
