@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import practice.todoList.Vo.LoginVo;
 import practice.todoList.domain.Member;
+import practice.todoList.domain.Note;
 import practice.todoList.domain.Plan;
 import practice.todoList.domain.WeekDay;
 import practice.todoList.service.*;
@@ -28,6 +29,7 @@ public class SessionController {
 
     private final MemberInquiryService memberInquiryService;
     private final PlanService planService;
+    private final NoteService noteService;
 
     private String userId;
 
@@ -86,5 +88,29 @@ public class SessionController {
         List<Plan> plans = planService.registerPlans(userId, plan, WeekDay.WEEK_DAY);
         return new ResponseEntity<>(plans, HttpStatus.OK);
 
+    }
+
+    //note
+
+    @PostMapping("/api/note")
+    public ResponseEntity<Note> registerNote(@RequestBody Note note)  {
+
+        noteService.registerNote(userId, note);
+        return new ResponseEntity<>(note, HttpStatus.OK);
+    }
+
+
+    @PatchMapping("/api/note")
+    public ResponseEntity<Note> modifyNote(@RequestBody Note note)  {
+
+        Note modifiedNote = noteService.modifyNote(userId, note);
+        return new ResponseEntity<>(modifiedNote, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/api/note/{id}")
+    public ResponseEntity<String> deleteNote(@PathVariable("id") int id) {
+
+        noteService.deleteNote(userId, id);
+        return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
     }
 }

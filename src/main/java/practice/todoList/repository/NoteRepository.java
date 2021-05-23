@@ -11,6 +11,7 @@ public interface NoteRepository {
     Optional<Note> findById(int id);
     List<Note> findAll();
     List<Note> findByUserIdAndDate(String userId, LocalDate date);
+    void deleteById(int id);
 
 
 
